@@ -390,13 +390,13 @@ jobs:
               echo "CONFIG_ZRAM_WRITEBACK=y" >> "$CONFIG_FILE"
             fi
           fi
-      - name: Add sched_ext
-        run: |
-         cd kernel_workspace/kernel_platform/
-         git clone https://github.com/AQ16/QQQiuCi.git
-         cp -r ./QQQiuCi/sched/* ./common/kernel/sched
-         rm -rf ./QQQiuCi/.git
-         cd common/kernel/sched
+      #- name: Add sched_ext
+        #run: |
+         #cd kernel_workspace/kernel_platform/
+         #git clone https://github.com/AQ16/QQQiuCi.git
+         #cp -r ./QQQiuCi/sched/* ./common/kernel/sched
+         #rm -rf ./QQQiuCi/.git
+         #cd common/kernel/sched
           
 
       - name: Build kernel
