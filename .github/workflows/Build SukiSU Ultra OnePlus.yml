@@ -6,7 +6,7 @@ on:
         type: choice
         description: "分支"
         required: true
-        default: sm8550
+        default: sm8475
         options:
           - sm7550
           - sm7675
@@ -19,7 +19,7 @@ on:
         type: choice
         description: "配置文件"
         required: true
-        default: oneplus_ace2pro_v
+        default: oneplus_ace_pro_v
         options:
           - oneplus_nord_ce4_v
           - oneplus_ace_3v_v
@@ -47,7 +47,7 @@ on:
         type: choice
         description: "处理器代号"
         required: true
-        default: kalama
+        default: waipio
         options:
           - crow
           - waipio
@@ -58,7 +58,7 @@ on:
         type: choice
         description: "内核初始安卓版本"
         required: true
-        default: android13
+        default: android12
         options:
           - android12
           - android13
@@ -68,7 +68,7 @@ on:
        type: choice
        description: "内核版本"
        required: true
-       default: "5.15"
+       default: "5.10"
        options:
          - "5.10"
          - "5.15"
@@ -390,6 +390,15 @@ jobs:
               echo "CONFIG_ZRAM_WRITEBACK=y" >> "$CONFIG_FILE"
             fi
           fi
+      - name: Add sched_ext
+        run: |
+         cd kernel_workspace/kernel_platform/
+         git clone https://github.com/AQ16/sched_ext.git
+         cp -r ./sched_ext/* ./common/kernel/sched
+         rm -rf ./sched_ext/.git
+         cd common/kernel/sched
+         sed -i.bak '/# include "ext.c"/a\# include "hmbird_sched_proc_main.c"\n#endif\n\n#ifdef CONFIG_SLIM_SCHED\n# include "slim_sysctl.c"' build_policy.c
+             
 
       - name: Build kernel
         if: ${{ github.event.inputs.CPU == 'sm8650' || github.event.inputs.CPU == 'sm7675' }}
